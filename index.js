@@ -29,13 +29,32 @@ db.connect((err) => {
     console.log('Connection successfuly!'); 
 });
 
+//membuat method GET dan POST
+
+//GET
 app.get('/api/users', (req, res) => {
   db.query('SELECT * FROM mahasiswa', (err, results) => {
     if (err) {
-      console.error('Error executing query:0', err);
+      console.error('Error executing query:0', err.stack);
       res.status(500).json({ error: 'Error fetching users' });
       return;
     }
     res.json(results);
+  });
+});
+
+//POST
+app.post('/api/users', (req, res) => {
+  const { nama, nim, kelas } = req.body;
+   if (!nama || !nim || !kelas) {
+    return res.status(400).json({ error: 'nama, nim, kelas wajib diisi' });
+  }
+  db.query('INSERT INTO mahasiswa (nama, nim, kelas) VALUES (?, ?, ?)', 
+    [nama, nim, kelas], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Database Error' });
+    }
+    res.status(201).json({ message: 'User created successfully' });
   });
 });
