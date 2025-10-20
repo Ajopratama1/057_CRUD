@@ -1,0 +1,12 @@
+#agar node modules tidak terpush di github
+/node_modules
+
+.env
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.DS_Store
+
+/dist
